@@ -225,17 +225,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 689279595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c83a087d1817c7c4ca52953ec2e28613, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d1eaa98b62d9f0478a7d60ff226bf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kuwaharaShader: {fileID: 4800000, guid: 9beac028ea086674a8bf9fd9905f06c5, type: 3}
+  kuwaharaShader: {fileID: 4800000, guid: 9d678ac3dd395274289c21509ddfb2d3, type: 3}
   kernelSize: 5
-  animateKernelSize: 0
-  minKernelSize: 4
-  sizeAnimationSpeed: 1
-  noiseFrequency: 10
-  animateKernelOrigin: 0
-  passes: 2
+  passes: 1
 --- !u!1 &1233038619
 GameObject:
   m_ObjectHideFlags: 0
