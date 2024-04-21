@@ -9,6 +9,7 @@ public class SpinForFun : MonoBehaviour
     void FixedUpdate()
     {
         transform.rotation = Quaternion.EulerAngles(transform.rotation.x, transform.rotation.y + mSpeed, transform.rotation.z);
-        mSpeed += Time.deltaTime;
+        if(mSpeed < float.PositiveInfinity - 1000)
+            mSpeed += Time.deltaTime;
     }
 }
