@@ -15,7 +15,11 @@ public class WallGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // PROBLEM!! O(n^2)
+        if(splineGen == null)
+        {
+            splineGen = FindObjectOfType<SplineGenerator>();
+        }
+        // O(n^2)
         foreach(Spline s in splineGen.splines)
         {
             foreach(Vector3 point in s.points)
