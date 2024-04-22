@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShowFilter : MonoBehaviour
 {
-
     public Shader kuwaharaShader;
 
     [Range(1, 20)]
@@ -34,13 +33,12 @@ public class ShowFilter : MonoBehaviour
         }
 
         Graphics.Blit(source, kuwaharaPasses[0], kuwaharaMat);
-
         for (int i = 1; i < passes; ++i)
         {
             Graphics.Blit(kuwaharaPasses[i - 1], kuwaharaPasses[i], kuwaharaMat);
         }
-
         Graphics.Blit(kuwaharaPasses[passes - 1], destination);
+
         for (int i = 0; i < passes; ++i)
         {
             RenderTexture.ReleaseTemporary(kuwaharaPasses[i]);

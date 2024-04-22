@@ -229,8 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kuwaharaShader: {fileID: 4800000, guid: 9d678ac3dd395274289c21509ddfb2d3, type: 3}
-  kernelSize: 5
-  passes: 1
+  kernelSize: 3
+  passes: 3
 --- !u!1 &1233038619
 GameObject:
   m_ObjectHideFlags: 0
