@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowFilter : MonoBehaviour
+public class ShowFilterV1 : MonoBehaviour
 {
     public Shader kuwaharaShader;
 
