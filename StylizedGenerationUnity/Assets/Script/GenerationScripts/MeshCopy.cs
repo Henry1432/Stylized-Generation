@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+using static UnityEngine.Rendering.HableCurve;
 
 public class MeshCopy : MonoBehaviour
 {
@@ -52,7 +54,8 @@ public class MeshCopy : MonoBehaviour
                     if (counter == speed)
                     {
                         up = Quaternion.FromToRotation(s.direction[(s.points.IndexOf(point) - 1)], s.direction[s.points.IndexOf(point)]) * up;
-                        verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 0.5f, SEGMENTS));
+                        verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 1f, SEGMENTS));
+                       
                         counter = 0;
                     }
                     else
@@ -62,6 +65,7 @@ public class MeshCopy : MonoBehaviour
 
                 }
             }
+            triangles.AddRange(CreateIndices(verts));
             mesh.vertices = verts.ToArray();
             mesh.uv = uvs.ToArray();
             mesh.triangles = triangles.ToArray();
@@ -83,8 +87,48 @@ public class MeshCopy : MonoBehaviour
             Vector3 pt = Quaternion.AngleAxis(theta, dir) * tempUp;
             tempUp = pt.normalized;
         }
+
         verts.RemoveAt(0);
+       
         return verts;
     }
-   
+
+    List<int> CreateIndices(List<Vector3> v)
+    {
+        List<int> indices = new List<int>();
+        for(int i = 0; i < v.Count - SEGMENTS; i++)
+        {
+            // if final leg of segment - wrap around
+            if((i + 1) % SEGMENTS == 0)
+            {
+                indices.Add(i); //final point current seg
+                indices.Add(i + SEGMENTS); // final point on next seg
+                indices.Add(i - SEGMENTS + 1);// first point current seg
+            }
+            else
+            {
+                indices.Add(i); // current point current seg
+                indices.Add(i + SEGMENTS); // current point next seg
+                indices.Add(i + 1); // next point current seg
+            }
+        }
+        // for final segment, wrap around to first
+        for(int j = v.Count - SEGMENTS; j < SEGMENTS; j++)
+        {
+            if ((j + 1) % SEGMENTS == 0)
+            {
+                indices.Add(j); //final point final seg
+                indices.Add(0); // first point first seg
+                indices.Add(j - SEGMENTS + 1);//first point final seg
+            }
+            else
+            {
+                indices.Add(j); //start point final seg
+                indices.Add(j % SEGMENTS); //next point first seg
+                indices.Add(j + 1); // next point final seg
+            }
+        }
+        return indices;
+    }
 }
+
