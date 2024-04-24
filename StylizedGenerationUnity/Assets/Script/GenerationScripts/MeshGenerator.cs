@@ -11,6 +11,9 @@ public class MeshGenerator : MonoBehaviour
     public SplinePoint point;
     public SplineGenerator gen;
     public List<SplinePoint> points;
+
+    [Range(1, 25)]
+    public int speed;
     // Start is called before the first frame update
     void Start()
     {
