@@ -1,4 +1,4 @@
-Shader "Hidden/KuwaharaFilter"
+Shader "Hidden/KuwaharaFilterV1"
 {
     Properties
     {

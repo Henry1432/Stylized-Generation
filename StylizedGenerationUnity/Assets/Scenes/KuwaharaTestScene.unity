@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 689279597}
   - component: {fileID: 689279596}
   - component: {fileID: 689279599}
+  - component: {fileID: 689279600}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -223,13 +224,34 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689279595}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d1eaa98b62d9f0478a7d60ff226bf31, type: 3}
+  m_Script: {fileID: 11500000, guid: 974eeac0b87fb374d82822cb1a2df6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   kuwaharaShader: {fileID: 4800000, guid: 9d678ac3dd395274289c21509ddfb2d3, type: 3}
-  kernelSize: 3
+  kernelSize: 10
+  passes: 3
+--- !u!114 &689279600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689279595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449fa483507d02c41b74c0663234f14a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kuwaharaShader: {fileID: 4800000, guid: 20bf2551412ffbb469889783cae5949a, type: 3}
+  kernelSize: 18
+  sharpness: 18
+  hardness: 35
+  alpha: 1.7
+  zeroCrossing: 1.58
+  useZeta: 0
+  zeta: 1
   passes: 3
 --- !u!1 &1233038619
 GameObject:
