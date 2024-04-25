@@ -12,7 +12,7 @@ public class ShowFilterV2 : MonoBehaviour
     [SerializeField] private float mHardness = 35;
     [Range(0.01f, 2f)]
     [SerializeField] private float mAlpha = 1.7f;
-    [Range(0.26f, 2f)]
+    [Range(0.26f, 5f)]
     [SerializeField] private float mProcessSoftness = 1.5f;
 
     [SerializeField] private bool mUseSoften = true;
