@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.442346, g: 0.4913897, b: 0.57126164, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   kuwaharaShader: {fileID: 4800000, guid: 9d678ac3dd395274289c21509ddfb2d3, type: 3}
-  kernelSize: 10
+  kernelSize: 3
   passes: 3
 --- !u!114 &689279600
 MonoBehaviour:
@@ -244,15 +244,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 449fa483507d02c41b74c0663234f14a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kuwaharaShader: {fileID: 4800000, guid: 20bf2551412ffbb469889783cae5949a, type: 3}
-  kernelSize: 18
-  sharpness: 18
-  hardness: 35
-  alpha: 1.7
-  zeroCrossing: 1.58
-  useZeta: 0
-  zeta: 1
-  passes: 3
+  gmKuwaharaShader: {fileID: 4800000, guid: 20bf2551412ffbb469889783cae5949a, type: 3}
+  mKernelSize: 10
+  mSharpness: 20
+  mHardness: 35
+  mAlpha: 1.7
+  mProcessSoftness: 1.5
+  mUseSoften: 1
+  mSoftness: 0.25
+  mPasses: 3
 --- !u!1 &1233038619
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,13 +340,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1233038619}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.51219636, y: -0.25761554, z: 0.09372684, w: 0.81394374}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 49.779, y: -64.998, z: -32.694}
 --- !u!1001 &1601071325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -424,7 +424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18083181bf2c9774e9881fdf26165509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSpeed: 0
+  mRotation: 0
+  mSpeed: 0.025
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

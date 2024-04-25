@@ -7,10 +7,10 @@ public class ShowFilterV1 : MonoBehaviour
     public Shader kuwaharaShader;
 
     [Range(1, 20)]
-    public int kernelSize = 1;
+    public int kernelSize = 3;
 
     [Range(1, 5)]
-    public int passes = 1;
+    public int passes = 3;
 
     private Material kuwaharaMat;
 
