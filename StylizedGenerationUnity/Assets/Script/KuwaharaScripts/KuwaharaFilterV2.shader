@@ -38,8 +38,7 @@ Shader "Hidden/KuwaharaFilterV2"
         sampler2D _MainTex, _TFM;
         float4 _MainTex_TexelSize;
         int _KernelSize, _N, _Size;
-        float _Hardness, _Q, _Alpha, _ZeroCrossing, _Zeta;
-        int _ShowStep;
+        float _Hardness, _Q, _Alpha, _ZeroCrossing, _Softness;
         
         float blurFunc(float sigma, float pos) {
             return (1.0f / sqrt(2.0f * PI * sigma * sigma)) * exp(-(pos * pos) / (2.0f * sigma * sigma));
@@ -55,7 +54,8 @@ Shader "Hidden/KuwaharaFilterV2"
 
             float4 frag(v2f i) : SV_Target {
                 float2 pixelPos = _MainTex_TexelSize.xy;
-
+                
+                //I coppied this part more directly from the git https://github.com/GarrettGunnell/Post-Processing/blob/main/Assets/Kuwahara%20Filter/AnisotropicKuwahara.shader
                 float3 avaragePixelx = (
                     1.0f * tex2D(_MainTex, i.uv + float2(-pixelPos.x, -pixelPos.y)).rgb +
                     2.0f * tex2D(_MainTex, i.uv + float2(-pixelPos.x,  0.0)).rgb +
@@ -93,10 +93,10 @@ Shader "Hidden/KuwaharaFilterV2"
                 float gaussTotal = 0.0f;
 
                 for (int x = -r; x <= r; ++x) {
-                    float4 c = tex2D(_MainTex, i.uv + float2(x, 0) * _MainTex_TexelSize.xy);
+                    float4 blurPos = tex2D(_MainTex, i.uv + float2(x, 0) * _MainTex_TexelSize.xy);
                     float gauss = blurFunc(2.0f, x);
 
-                    col += c * gauss;
+                    col += blurPos * gauss;
                     gaussTotal += gauss;
                 }
 
@@ -118,10 +118,10 @@ Shader "Hidden/KuwaharaFilterV2"
                 float gaussTotal = 0.0f;
 
                 for (int y = -r; y <= r; ++y) {
-                    float4 c = tex2D(_MainTex, i.uv + float2(0, y) * _MainTex_TexelSize.xy);
+                    float4 blurPos = tex2D(_MainTex, i.uv + float2(0, y) * _MainTex_TexelSize.xy);
                     float gauss = blurFunc(2.0f, y);
 
-                    col += c * gauss;
+                    col += blurPos * gauss;
                     gaussTotal += gauss;
                 }
 
@@ -175,11 +175,11 @@ Shader "Hidden/KuwaharaFilterV2"
                 int max_x = int(sqrt(a * a * cos_phi * cos_phi + b * b * sin_phi * sin_phi));
                 int max_y = int(sqrt(a * a * sin_phi * sin_phi + b * b * cos_phi * cos_phi));
 
-                float zeta = _Zeta;
+                float softness = _Softness;
 
                 float zeroCross = _ZeroCrossing;
                 float sinZeroCross = sin(zeroCross);
-                float eta = (zeta + cos(zeroCross)) / (sinZeroCross * sinZeroCross);
+                float eta = (softness + cos(zeroCross)) / (sinZeroCross * sinZeroCross);
                 int k;
                 float4 m[8];
                 float3 s[8];
@@ -205,8 +205,8 @@ Shader "Hidden/KuwaharaFilterV2"
                             float z, vxx, vyy;
                             
                             /* Calculate Polynomial Weights */ //poly weights math directly coppied from git
-                            vxx = zeta - eta * v.x * v.x;
-                            vyy = zeta - eta * v.y * v.y;
+                            vxx = softness - eta * v.x * v.x;
+                            vyy = softness - eta * v.y * v.y;
                             //get either 0 or pixel pos for weight, whichever is heighter
                             z = max(0, v.y + vxx); 
                             //modify weight and total weight
@@ -223,8 +223,8 @@ Shader "Hidden/KuwaharaFilterV2"
                             w[6] = z * z;
                             sum += w[6];
                             v = sqrt(2.0f) / 2.0f * float2(v.x - v.y, v.x + v.y);
-                            vxx = zeta - eta * v.x * v.x;
-                            vyy = zeta - eta * v.y * v.y;
+                            vxx = softness - eta * v.x * v.x;
+                            vyy = softness - eta * v.y * v.y;
                             z = max(0, v.y + vxx); 
                             w[1] = z * z;
                             sum += w[1];
