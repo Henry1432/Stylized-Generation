@@ -25,6 +25,7 @@ public class MeshCopy : MonoBehaviour
     public float radius;
     const int SEGMENTS = 25;
     bool ran = false;
+    bool quads = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,13 +38,27 @@ public class MeshCopy : MonoBehaviour
         {
             splineGen = FindObjectOfType<SplineGenerator>();
         }
-
+        quads = false;
+        //quads = true;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        //if (Input.GetKeyDown(KeyCode.Space));
+        //{
+        //    if(quads)
+        //    {
+        //        quads = false;
+        //    }
+        //    else
+        //    {
+        //        quads = true;
+        //    }
+                
+        //}
+        
         if (!ran && splineGen.splines.Capacity != 0 && frames >= 2)
         {
             int counter = 0;
@@ -57,7 +72,7 @@ public class MeshCopy : MonoBehaviour
                     if (counter == speed)
                     {
                         up = Quaternion.FromToRotation(s.direction[(s.points.IndexOf(point) - 1)], s.direction[s.points.IndexOf(point)]) * up;
-                        verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 0.5f, SEGMENTS));
+                        verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f, SEGMENTS));
                        
                         counter = 0;
                     }
@@ -74,6 +89,7 @@ public class MeshCopy : MonoBehaviour
             mesh.triangles = triangles.ToArray();
             obj.GetComponent<MeshFilter>().mesh = mesh;
             obj.GetComponent<MeshRenderer>().material = mat;
+            //mesh.SetIndices(triangles.ToArray(), MeshTopology.Lines, 0);
             ran = true;
         }
         frames++; // giving a two frame buffer allows closed splines to close
@@ -100,54 +116,73 @@ public class MeshCopy : MonoBehaviour
     {
         List<int> indices = new List<int>();
         for(int i = 0; i < v.Count - SEGMENTS; i++) // real for loop
-        //for(int i = 0; i < SEGMENTS * 10; i++) // debug for loop
+        //for(int i = 0; i < SEGMENTS * 5; i++) // debug for loop
         {
-            // if final point of segment - wrap around to first point
-            if((i + 1) % SEGMENTS == 0)
+            //if final point of segment - wrap around to first point
+            if ((i + 1) % SEGMENTS == 0)
             {
 
                 indices.Add(i + SEGMENTS);     // current point next seg
                 indices.Add(i);                // current point current seg
                 indices.Add(i - SEGMENTS + 1); // first point current seg
-                //indices.Add(i + SEGMENTS + 1); // first point next seg
-                //indices.Add(i + SEGMENTS);     // current point next seg
-                //indices.Add(i - SEGMENTS + 1); // first point current seg
+                if (quads)
+                {
+                    indices.Add(i + SEGMENTS + 1); // first point next seg
+                    indices.Add(i + SEGMENTS);     // current point next seg
+                    indices.Add(i - SEGMENTS + 1); // first point current seg
+                }
+
             }
             else
             {
                 indices.Add(i + SEGMENTS);      // current point next seg
                 indices.Add(i);                 // current point current seg
                 indices.Add(i + 1);             // next point current seg
-                //indices.Add(i + SEGMENTS + 1);  // next point next seg
-                //indices.Add(i + SEGMENTS);      // current point next seg
-                //indices.Add(i + 1);             // point after current seg
+                if (quads)                               
+                {
+                   indices.Add(i + SEGMENTS + 1);  // next point next seg
+                   indices.Add(i + SEGMENTS);      // current point next seg
+                   indices.Add(i + 1);             // point after current seg
+                }
+
+
             }
         }
         // for final segment, wrap around to first segment
-        for (int j = v.Count - SEGMENTS; j < v.Count - 2; j++)
+        //for (int j = v.Count - SEGMENTS; j < v.Count; j++)
+        //{
+        //    // if final point of segment - wrap around to first point
+        //    if ((j + 1) % SEGMENTS == 0)
+        //    {
+        //        indices.Add(0);                // first point first seg
+        //        indices.Add(j);                // final point final seg
+        //        indices.Add(j - SEGMENTS + 1); // first point final seg
+        //        if(quads)
+        //        {
+        //           indices.Add(1);                // next  point first seg
+        //           indices.Add(0);                // first point first seg
+        //           indices.Add(j - SEGMENTS + 1); // first point final seg
+        //        }
+
+
+        //    }
+        //    else
+        //    {
+        //        indices.Add(j % SEGMENTS);     // current point first seg 
+        //        indices.Add(j);                // current point final seg   
+        //        indices.Add(j + 1);            // next point final seg
+        //        if(quads)
+        //        {
+        //            indices.Add(j + 1 % SEGMENTS); // next point first seg
+        //            indices.Add(j % SEGMENTS);     // current point first seg
+        //            indices.Add(j + 1);            // next point final seg          
+        //        }
+        //    }
+        //}
+        foreach (int i in indices) 
         {
-            // if final point of segment - wrap around to first point
-            if ((j + 1) % SEGMENTS == 0)
-            {
-                indices.Add(0);                // first point first seg
-                indices.Add(j);                // final point final seg
-                indices.Add(j - SEGMENTS + 1); // first point final seg
-                //indices.Add(1);                // next  point first seg
-                //indices.Add(0);                // first point first seg
-                //indices.Add(j - SEGMENTS + 1); // first point final seg
-
-            }
-            else
-            {
-                indices.Add(j % SEGMENTS);     // current point first seg 
-                indices.Add(j);                // current point final seg   
-                indices.Add(j + 1);            // next point final seg
-                //indices.Add(j + 1 % SEGMENTS); // next point first seg
-                //indices.Add(j % SEGMENTS);     // current point first seg
-                //indices.Add(j + 1);            // next point final seg
-            }
+            Mathf.Clamp(i, 0, v.Count - 1);
         }
-
         return indices;
     }
 }
