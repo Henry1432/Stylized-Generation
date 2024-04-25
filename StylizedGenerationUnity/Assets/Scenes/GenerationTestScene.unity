@@ -369,13 +369,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 519091311}
     m_Modifications:
+    - target: {fileID: 2268170257299603791, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
+      propertyPath: closedEdit
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6362402850699495992, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.0887415
       objectReference: {fileID: 0}
     - target: {fileID: 6362402850699495992, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.9067019
+      value: -1.18
       objectReference: {fileID: 0}
     - target: {fileID: 6362402850699495992, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -412,6 +416,14 @@ PrefabInstance:
     - target: {fileID: 7363961273060421796, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
       propertyPath: m_Name
       value: Spline
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684066800074658250, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684066800074658250, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.68
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
