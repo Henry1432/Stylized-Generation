@@ -11,7 +11,13 @@ using System.Drawing;
 using static UnityEngine.Rendering.DebugUI.Table;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
+using System.Reflection;
 
+public class Vert
+{
+    Vector3 pos;
+    int index;
+}
 public class MeshCopy : MonoBehaviour
 {
     public SplineGenerator splineGen;
@@ -23,11 +29,10 @@ public class MeshCopy : MonoBehaviour
     public Material mat;
     public Transform first;
 
-    int speed = 1;
+    int speed = 10;
     int frames = 0;
     public float radius;
-    const int SEGMENTS = 10;
-    const float PI = 3.1415926535f;
+    const int SEGMENTS = 8;
     bool ran = false;
     bool quads = false;
     // Start is called before the first frame update
@@ -103,16 +108,17 @@ public class MeshCopy : MonoBehaviour
     {
         List<Vector3> verts = new List<Vector3>();
         Vector3 tempUp = up;
-        for(int i = 0; i < SEGMENTS; i++)
+        for (int i = 0; i <= SEGMENTS; i++)
         {
             verts.Add(center + (radius * tempUp));
             float theta = (360 / SEGMENTS) * i;
             Vector3 pt = Quaternion.AngleAxis(theta, dir) * tempUp;
             tempUp = pt.normalized;
         }
-      Vector3 first = verts.First();
-      verts.RemoveAt(0);
-      verts.Add(first);
+
+      //Vector3 first = verts.First();
+      //verts.RemoveAt(0);
+      //verts.Add(first);
 
         return verts;
     }
@@ -120,7 +126,7 @@ public class MeshCopy : MonoBehaviour
     List<int> CreateIndices(List<Vector3> v)
     {
         List<int> indices = new List<int>();
-        int columns = 0, points = 0;
+        int points = 0;
         foreach(Spline s in splineGen.splines)
         {
             foreach(Vector3 p in s.points)
@@ -128,30 +134,29 @@ public class MeshCopy : MonoBehaviour
                 points++;
             }
         }
-        columns = SEGMENTS + 1;
-        //for (int i = 0; i < v.Count; i++) // real for loop
-        //for(int i = 0; i < SEGMENTS * 5; i++) // debug for loop
+        int columns = SEGMENTS + 1;
+        int rings = v.Count / SEGMENTS;
+        Debug.Log(points); Debug.Log(rings);
+        for (int row = 0; row < 1; row++)
         {
-            for (int row = 0; row < (points / (speed + 1)) / 2; row++)
+            for (int col = 0; col < SEGMENTS; col++)
             {
-                for (int col = 0; col < SEGMENTS; col++)
-                {
-                    int start = row * columns + col;
-                    indices.Add(start);
-
-                    indices.Add(start + 1);
-
-                    indices.Add(start + SEGMENTS);
-                }
+                 int start = row * columns + col;
+                 indices.Add(start);
+            
+                 indices.Add(start + 1);
+            
+                 indices.Add(start + columns);
             }
         }
         return indices;
     }
 }
-
-            //    //if final point of segment - wrap around to first point
-            //    if ((i + 1) % SEGMENTS == 0)
-            //    {
+//for (int i = 0; i < v.Count; i++) // real for loop
+//for(int i = 0; i < SEGMENTS * 5; i++) // debug for loop
+//    //if final point of segment - wrap around to first point
+//    if ((i + 1) % SEGMENTS == 0)
+//    {
 
 //        indices.Add(i + SEGMENTS);     // current point next seg
 //        indices.Add(i);                // current point current seg
