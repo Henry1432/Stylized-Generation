@@ -13,15 +13,9 @@ using Unity.VisualScripting;
 using UnityEngine.UIElements;
 using System.Reflection;
 
-public class Vert
-{
-    Vector3 pos;
-    int index;
-}
 public class MeshCopy : MonoBehaviour
 {
     public SplineGenerator splineGen;
-    Mesh mesh;
     public List<Vector3> verts;
     public List<Vector2> uvs;
     public List<int> triangles;
@@ -34,91 +28,50 @@ public class MeshCopy : MonoBehaviour
     public float radius;
     const int SEGMENTS = 8;
     bool ran = false;
-    bool quads = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        mesh = new Mesh();
-
         splineGen = FindObjectOfType<SplineGenerator>();
-
-
-        if (splineGen == null)
-        {
-            splineGen = FindObjectOfType<SplineGenerator>();
-        }
-        quads = false;
-        //quads = true;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space));
-        //{
-        //    if(quads)
-        //    {
-        //        quads = false;
-        //    }
-        //    else
-        //    {
-        //        quads = true;
-        //    }
-                
-        //}
-        
+        if (splineGen == null)
+        {
+            splineGen = FindObjectOfType<SplineGenerator>();
+        }
         if (!ran && splineGen.splines.Capacity != 0 && frames >= 2)
         {
-            int counter = 0;
-            GameObject obj = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-            Vector3 up = first.up;
-            
-            foreach (Spline s in splineGen.splines)
-            {
-                foreach (Vector3 point in s.points)
-                {
-                    if (counter == speed)
-                    {
-                        up = Quaternion.FromToRotation(s.direction[(s.points.IndexOf(point) - 1)], s.direction[s.points.IndexOf(point)]) * up;
-                        verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f));
-                       
-                        counter = 0;
-                    }
-                    else
-                    {
-                        counter++;
-                    }
-
-                }
-            }
-            triangles.AddRange(CreateIndices(verts));
-            mesh.vertices = verts.ToArray();
-            mesh.uv = uvs.ToArray();
-            mesh.triangles = triangles.ToArray();
-            obj.GetComponent<MeshFilter>().mesh = mesh;
-            obj.GetComponent<MeshRenderer>().material = mat;
-            //mesh.SetIndices(triangles.ToArray(), MeshTopology.Lines, 0);
-            ran = true;
+            GenerateMesh();
         }
         frames++; // giving a two frame buffer allows closed splines to close
+
+        if(Input.GetKeyDown(KeyCode.R) && ran)
+        {
+            Rerun();
+        }
     }
 
     List<Vector3> CreateVerts(Vector3 center, Vector3 dir, Vector3 up, float radius)
     {
         List<Vector3> verts = new List<Vector3>();
         Vector3 tempUp = up;
+
         for (int i = 0; i <= SEGMENTS; i++)
         {
-            verts.Add(center + (radius * tempUp));
+            Vector3 randNoise = tempUp * UnityEngine.Random.Range(-1, 1);
+           // Vector3 r = , Vector3 u = , Vector3 f = dir;
+            verts.Add(center + (radius * tempUp) + randNoise);
             float theta = (360 / SEGMENTS) * i;
             Vector3 pt = Quaternion.AngleAxis(theta, dir) * tempUp;
             tempUp = pt.normalized;
         }
 
-      //Vector3 first = verts.First();
-      //verts.RemoveAt(0);
-      //verts.Add(first);
+        Vector3 first = verts.First();
+        verts.RemoveAt(0);
+        verts.Add(first);
 
         return verts;
     }
@@ -137,7 +90,7 @@ public class MeshCopy : MonoBehaviour
         int columns = SEGMENTS + 1;
         int rings = v.Count / SEGMENTS;
         Debug.Log(points); Debug.Log(rings);
-        for (int row = 0; row < 1; row++)
+        for (int row = 0; row < 50; row++)
         {
             for (int col = 0; col < SEGMENTS; col++)
             {
@@ -150,6 +103,50 @@ public class MeshCopy : MonoBehaviour
             }
         }
         return indices;
+    }
+
+    void GenerateMesh()
+    {
+        splineGen = FindObjectOfType<SplineGenerator>();
+        Mesh mesh = new Mesh();
+       int counter = 0;
+       GameObject obj = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+       Vector3 up = first.up;
+
+       foreach (Spline s in splineGen.splines)
+       {
+           foreach (Vector3 point in s.points)
+           {
+               if (counter == speed)
+               {
+                   up = Quaternion.FromToRotation(s.direction[s.points.IndexOf(point) - 1], s.direction[s.points.IndexOf(point)]) * up;
+                   verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f));
+
+                   counter = 0;
+               }
+               else
+               {
+                   counter++;
+               }
+
+           }
+       }
+       triangles.AddRange(CreateIndices(verts));
+       mesh.vertices = verts.ToArray();
+       mesh.uv = uvs.ToArray();
+       mesh.triangles = triangles.ToArray();
+       obj.GetComponent<MeshFilter>().mesh = mesh;
+       obj.GetComponent<MeshRenderer>().material = mat;
+        ran = true;
+    }
+    public void Rerun()
+    {
+        Mesh obj = FindObjectOfType<Mesh>();
+        Destroy(obj);
+        verts.Clear();
+        uvs.Clear();
+        triangles.Clear();
+        GenerateMesh();
     }
 }
 //for (int i = 0; i < v.Count; i++) // real for loop
