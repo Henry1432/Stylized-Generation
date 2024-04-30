@@ -351,10 +351,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 519091309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db6d333565ebe6e419743044671d3113, type: 3}
+  m_Script: {fileID: 11500000, guid: 837d15200be8d004cbe6f51bbf8047ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splineGen: {fileID: 1616347533}
+  splineGen: {fileID: 0}
   verts: []
   uvs: []
   triangles: 
@@ -514,17 +514,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
---- !u!114 &1616347533 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2268170257299603791, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
-  m_PrefabInstance: {fileID: 848474087}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f6c973d7e9c9b5499c36511bc51b06e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1616347534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6362402850699495992, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
