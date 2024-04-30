@@ -309,6 +309,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &475874103 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8684066800074658250, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
+  m_PrefabInstance: {fileID: 848474087}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519091309
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,8 +363,8 @@ MonoBehaviour:
   verts: []
   uvs: []
   triangles: 
-  mat: {fileID: 2100000, guid: 8b3b2acb07cd131488508e4daa1753a3, type: 2}
-  first: {fileID: 2002927993}
+  mat: {fileID: 2100000, guid: b3609834e35ae334a8e10723f64d1017, type: 2}
+  first: {fileID: 475874103}
   radius: 0
 --- !u!1 &707078017
 GameObject:
@@ -517,11 +522,6 @@ PrefabInstance:
 --- !u!4 &1616347534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6362402850699495992, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
-  m_PrefabInstance: {fileID: 848474087}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2002927993 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8684066800074658250, guid: 01995900b74a79b40b5a2285b7c1213b, type: 3}
   m_PrefabInstance: {fileID: 848474087}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
