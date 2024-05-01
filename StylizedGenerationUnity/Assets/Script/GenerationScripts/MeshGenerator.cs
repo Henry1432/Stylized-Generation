@@ -25,9 +25,15 @@ public class MeshCopy : MonoBehaviour
 
     int speed = 10;
     int frames = 0;
+
+    [Range(0.5f, 10)]
     public float radius;
-    const int SEGMENTS = 10;
+
+    const int SEGMENTS = 100;
     bool ran = false;
+
+    [Range(0.1f, 0.2f)]
+    public float gNoise;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +70,7 @@ public class MeshCopy : MonoBehaviour
         {
             float theta = (2 * Mathf.PI / SEGMENTS) * i;
             
-            Vector3 pos = center + r * Mathf.Cos(theta) + u * Mathf.Sin(theta);
+            Vector3 pos = center + (r * Mathf.Cos(theta) + u * Mathf.Sin(theta) * radius);
             Vector3 toCenter = pos - center;
             Vector3 toAdd = pos + toCenter * UnityEngine.Random.Range(-noise, noise);
             verts.Add(toAdd);
@@ -88,9 +94,9 @@ public class MeshCopy : MonoBehaviour
         int rings = v.Count / SEGMENTS;
         Debug.Log(points); Debug.Log(rings);
 
-        for (int row = 0; row < rings - 1; row++)
+        for (int row = 0; row < rings - 5; row++)
         {
-            for (int col = 0; col < rings - 1; col++)
+            for (int col = 0; col < SEGMENTS; col++)
             {
                 int start = row * columns + col;
                 indices.Add(start);
@@ -132,7 +138,7 @@ public class MeshCopy : MonoBehaviour
                 {
                     up = Vector3.up;
                     up = Quaternion.FromToRotation(s.direction[s.points.IndexOf(point) - 1], s.direction[s.points.IndexOf(point)]) * up;
-                    verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f, 0.1f));
+                    verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f, gNoise));
 
                     counter = 0;
                 }
@@ -160,7 +166,7 @@ public class MeshCopy : MonoBehaviour
 
     public void Rerun()
     {
-        Mesh obj = FindObjectOfType<Mesh>();
+        MeshRenderer obj = FindObjectOfType<MeshRenderer>();
         Destroy(obj);
         verts.Clear();
         uvs.Clear();
