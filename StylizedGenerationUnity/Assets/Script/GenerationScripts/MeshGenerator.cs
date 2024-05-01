@@ -32,7 +32,7 @@ public class MeshCopy : MonoBehaviour
     const int SEGMENTS = 100;
     bool ran = false;
 
-    [Range(0.1f, 0.2f)]
+    [Range(0.005f, 0.2f)]
     public float gNoise;
 
     // Start is called before the first frame update
