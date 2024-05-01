@@ -23,10 +23,10 @@ public class MeshCopy : MonoBehaviour
     public Material mat;
     public Transform first;
 
-    int speed = 1;
+    int speed = 10;
     int frames = 0;
     public float radius;
-    const int SEGMENTS = 100;
+    const int SEGMENTS = 10;
     bool ran = false;
 
     // Start is called before the first frame update
@@ -54,7 +54,7 @@ public class MeshCopy : MonoBehaviour
         }
     }
 
-    List<Vector3> CreateVerts(Vector3 center, Vector3 dir, Vector3 up, float radius)
+    List<Vector3> CreateVerts(Vector3 center, Vector3 dir, Vector3 up, float radius, float noise)
     {
         List<Vector3> verts = new List<Vector3>();
         Vector3 f = dir.normalized;
@@ -63,8 +63,11 @@ public class MeshCopy : MonoBehaviour
         for (int i = 0; i <= SEGMENTS; i++)
         {
             float theta = (2 * Mathf.PI / SEGMENTS) * i;
+            
             Vector3 pos = center + r * Mathf.Cos(theta) + u * Mathf.Sin(theta);
-            verts.Add(pos);
+            Vector3 toCenter = pos - center;
+            Vector3 toAdd = pos + toCenter * UnityEngine.Random.Range(-noise, noise);
+            verts.Add(toAdd);
         }
         
         return verts;
@@ -85,9 +88,9 @@ public class MeshCopy : MonoBehaviour
         int rings = v.Count / SEGMENTS;
         Debug.Log(points); Debug.Log(rings);
 
-        for (int row = 1; row < SEGMENTS - 1; row++)
+        for (int row = 0; row < rings - 1; row++)
         {
-            for (int col = 0; col < SEGMENTS; col++)
+            for (int col = 0; col < rings - 1; col++)
             {
                 int start = row * columns + col;
                 indices.Add(start);
@@ -96,6 +99,11 @@ public class MeshCopy : MonoBehaviour
 
                 indices.Add(start + columns);
 
+                indices.Add(start + columns);
+
+                indices.Add(start + 1);
+
+                indices.Add(start + columns + 1);
             }
         }
         return indices;
@@ -113,26 +121,25 @@ public class MeshCopy : MonoBehaviour
     {
         splineGen = FindObjectOfType<SplineGenerator>();
         Mesh mesh = new Mesh();
-        int counter = 0;
         GameObject obj = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
         Vector3 up = first.up;
-
+        int counter = 0;
         foreach (Spline s in splineGen.splines)
         {
             foreach (Vector3 point in s.points)
             {
-                //if (counter == speed)
-                // {
-                      up = Vector3.up;
-                    //up = Quaternion.FromToRotation(s.direction[s.points.IndexOf(point) - 1], s.direction[s.points.IndexOf(point)]) * up;
-                    verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f));
-                    
+                if (counter == speed)
+                {
+                    up = Vector3.up;
+                    up = Quaternion.FromToRotation(s.direction[s.points.IndexOf(point) - 1], s.direction[s.points.IndexOf(point)]) * up;
+                    verts.AddRange(CreateVerts(point, s.direction[s.points.IndexOf(point)], up, 2f, 0.1f));
+
                     counter = 0;
-               // }
-                //else
-                //{
-                //    counter++;
-                //}
+                }
+                else
+                {
+                    counter++;
+                }
 
             }
         }
@@ -145,6 +152,12 @@ public class MeshCopy : MonoBehaviour
         obj.GetComponent<MeshRenderer>().material = mat;
         ran = true;
     }
+
+    public void GenerateNoise()
+    {
+
+    }
+
     public void Rerun()
     {
         Mesh obj = FindObjectOfType<Mesh>();
