@@ -6,9 +6,9 @@ public class ShowFilterV2 : MonoBehaviour
 
     [Range(2, 25)]
     [SerializeField] private int mKernelSize = 10;
-    [Range(1.0f, 30.0f)]
+    [Range(1.0f, 50.0f)]
     [SerializeField] private float mSharpness = 20;
-    [Range(0.0f, 50)]
+    [Range(0.0f, 35)]
     [SerializeField] private float mHardness = 35;
     [Range(0.01f, 2f)]
     [SerializeField] private float mAlpha = 1.7f;
