@@ -55,7 +55,8 @@ Shader "Hidden/KuwaharaFilterV1"
                     {
                         //got the color grab from Kuwahara Git here: https://github.com/GarrettGunnell/Post-Processing/tree/main/Assets/Kuwahara%20Filter
                         float3 col = tex2D(_MainTex, uv + float2(x, y) * _MainTex_TexelSize.xy).rgb;
-                        float l = luminance(col);
+                        float l = luminance(col); //apploes luminance because avarageing makes things muddy
+                        //math
                         colAvarage += l;
                         colPower += l * l;
                         colTotal += saturate(col);
@@ -65,6 +66,7 @@ Shader "Hidden/KuwaharaFilterV1"
                 float ava = colAvarage/n;
                 float std = abs(colPower / n - ava * ava);
 
+                //return
                 return float4(colTotal / n, std);
             }
 
