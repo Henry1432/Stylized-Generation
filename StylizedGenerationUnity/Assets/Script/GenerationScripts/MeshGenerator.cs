@@ -94,7 +94,7 @@ public class MeshCopy : MonoBehaviour
         int rings = v.Count / SEGMENTS;
         Debug.Log(points); Debug.Log(rings);
 
-        for (int row = 0; row < rings - 5; row++)
+        for (int row = 0; row < rings - 1; row++)
         {
             for (int col = 0; col < SEGMENTS; col++)
             {
@@ -164,6 +164,7 @@ public class MeshCopy : MonoBehaviour
 
     }
 
+    [ExecuteInEditMode]
     public void Rerun()
     {
         MeshRenderer obj = FindObjectOfType<MeshRenderer>();
