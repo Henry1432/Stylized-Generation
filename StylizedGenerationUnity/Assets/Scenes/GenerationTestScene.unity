@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 444388339}
   - component: {fileID: 444388342}
   - component: {fileID: 444388343}
+  - component: {fileID: 444388344}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -348,6 +349,32 @@ MonoBehaviour:
   mUseSoften: 1
   mSoftness: 0.25
   mPasses: 3
+  Test: {x: 0, y: 0}
+--- !u!114 &444388344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444388338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b9fe72014f1c64faedb7da508d8190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gmHenryShader: {fileID: 4800000, guid: ac29eee8540736645b361196c661dd4f, type: 3}
+  gmMainCam: {fileID: 444388340}
+  mKernelSize: 12
+  mSharpness: 25
+  mHardness: 0.72
+  mAlpha: 1.5
+  mProcessSoftness: 0.8
+  mUseSoften: 1
+  mSoftness: 0.5
+  mPasses: 2
+  mScale: 0.8
+  mDepthThreshold: 0.3
+  mEdgeColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &469196809
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,14 +1,15 @@
 using UnityEngine;
 
-public class ShowFilterV2 : MonoBehaviour
+public class ShowFilterV3 : MonoBehaviour
 {
     public Shader gmKuwaharaShader;
+    public Camera gmMainCam;
 
     [Range(2, 25)]
     [SerializeField] private int mKernelSize = 10;
     [Range(1.0f, 50.0f)]
     [SerializeField] private float mSharpness = 20;
-    [Range(0.0f, 35)]
+    [Range(0.0f, 1)]
     [SerializeField] private float mHardness = 35;
     [Range(0.01f, 2f)]
     [SerializeField] private float mAlpha = 1.7f;
@@ -22,19 +23,23 @@ public class ShowFilterV2 : MonoBehaviour
     [Range(1, 10)]
     [SerializeField] private int mPasses = 3;
 
-    public Vector2 Test;
-
     private Material mKuwaharaMat;
-
 
     void OnEnable()
     {
         mKuwaharaMat = new Material(gmKuwaharaShader);
         mKuwaharaMat.hideFlags = HideFlags.HideAndDontSave;
     }
-
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
+        RenderTexture main = new RenderTexture(gmMainCam.activeTexture);
+        //Debug.Log(main.mipmapCount);
+        main.useMipMap = true;
+        main.mipMapBias += 0.15f;
+
+        mKuwaharaMat.SetTexture("_MainTex", main);
+
+        //Screen.SetResolution(1024, 768, true);
         //I coppied this part more directly from the git https://github.com/GarrettGunnell/Post-Processing/blob/main/Assets/Kuwahara%20Filter/AnisotropicKuwahara.shader
         mKuwaharaMat.SetInt("_KernelSize", mKernelSize);
         mKuwaharaMat.SetInt("_N", 8);
